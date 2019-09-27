@@ -1,0 +1,73 @@
+image:
+  name: hashicorp/terraform:light
+  entrypoint:
+    - '/usr/bin/env'
+    - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' 
+
+variables:
+  PLAN: plan.tfplan
+  TFPATH: terraform
+  TF_IN_AUTOMATION: 1
+  AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY 
+  AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+  TF_VAR_cloud_public_key_b64: $CLOUD_PUBLIC_KEY_B64
+
+cache:
+  paths:
+    - $TFPATH/.terraform
+
+before_script:
+  - cd $TFPATH
+  - terraform --version
+  - rm -rf .terraform 
+  - terraform init
+
+stages:
+  - validate
+  - plan
+  - apply
+  - destroy
+
+validate:
+  stage: validate
+  script:
+    - terraform validate
+  only:
+    - branches
+
+plan:
+  stage: plan
+  script:
+    - terraform plan -out=$PLAN
+  artifacts:
+    expire_in: 8 hours
+    name: plan
+    paths:
+      - $TFPATH/$PLAN
+
+apply:
+  stage: apply
+  script:
+    - terraform apply -auto-approve $PLAN
+  dependencies:
+    - plan
+  artifacts:
+    expire_in: 8 hours
+    name: state
+    paths:
+      - $TFPATH/terraform.tfstate
+  only:
+    - master
+
+destroy:
+  stage: destroy
+  script:
+    - pwd
+    - ls -al
+    - terraform destroy -auto-approve
+  dependencies:
+    - apply
+  when: manual
+  only:
+    - master
+
