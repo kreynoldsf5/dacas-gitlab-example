@@ -1,3 +1,8 @@
 # dacas-gitlab-example
 
-Demo builds a single nic BIG-IP and 2 NGINX app servers.
+
+|---------------|---------------------------|
+| Environment   | AWS                       |
+| Product       | BIG-IP single NIC         |
+| Application   | 2xUbuntu running NGINX    |
+| Configuration | AS3 w/ service discovery  |
