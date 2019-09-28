@@ -3,6 +3,6 @@
 | Tier          | Description               |
 |---------------|---------------------------|
 | Environment   | AWS                       |
-| Product       | BIG-IP single NIC         |
-| Application   | 2xUbuntu running NGINX    |
+| Product       | 1 x BIG-IP single NIC     |
+| Application   | 2 x Ubuntu running NGINX  |
 | Configuration | AS3 w/ service discovery  |
