@@ -2,7 +2,7 @@
 owner = "DACAS"
 
 #Name of the project
-project_name = "AngryLlama"
+project_name = "Gitlab-CI-Demo"
 
 #AWS Region to use
 aws_region = "eu-west-1"
